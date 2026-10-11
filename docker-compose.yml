@@ -1,0 +1,73 @@
+x-backend-env: &backend-env
+  MONGO_URL: mongodb://mongo:27017
+  MONGO_DB: gambit
+  REDIS_URL: redis://redis:6379/0
+  CORS_ORIGINS: '["http://localhost:5173"]'
+  JWT_SECRET: ${JWT_SECRET:-dev-only-change-me-please-32-bytes-min}
+  ANALYSIS_DEPTH: ${ANALYSIS_DEPTH:-14}
+  WATCHFILES_FORCE_POLLING: "true"   # file events don't cross Windows bind mounts
+
+x-backend-deps: &backend-deps
+  mongo:
+    condition: service_healthy
+  redis:
+    condition: service_healthy
+
+services:
+  api:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    environment: *backend-env
+    volumes:
+      - ./backend:/app
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    depends_on: *backend-deps
+
+  worker:
+    build: ./backend
+    environment: *backend-env
+    volumes:
+      - ./backend:/app
+    command: arq worker.WorkerSettings --watch app
+    depends_on: *backend-deps
+
+  frontend:
+    build:
+      context: ./frontend
+      target: dev
+    ports:
+      - "5173:5173"
+    environment:
+      VITE_API_URL: http://localhost:8000
+      CHOKIDAR_USEPOLLING: "true"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - api
+
+  mongo:
+    image: mongo:7
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping')"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  mongo-data:

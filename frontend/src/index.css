@@ -1,0 +1,222 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------------------------
+   Design tokens. Components use the semantic names (bg-panel, text-ink, text-brand ...),
+   never raw colors, so light and dark are one switch (data-theme on <html>).
+   Dark is the default; index.html picks light first when the OS asks for it.
+   ------------------------------------------------------------------------------------ */
+:root {
+  color-scheme: dark;
+
+  --bg: #1c1a17;
+  --panel: #272420;
+  --panel-2: #302c27;
+  --raised: #3a3530;
+  --line: #413c35;
+  --ink: #f3f0ea;
+  --ink-2: #c8c2b6;
+  --muted: #8d867a;
+
+  --brand: #62b04a;
+  --brand-hover: #74c25c;
+  --on-brand: #0f1f0b;
+  --danger: #ee6b60;
+  --warning: #e8b23f;
+  --info: #6cb8ec;
+
+  /* Move classifications */
+  --cls-best: #7fd35f;
+  --cls-good: #6cb8ec;
+  --cls-inaccuracy: #e8c84a;
+  --cls-mistake: #f0963c;
+  --cls-blunder: #ee6b60;
+
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.25), 0 8px 24px rgb(0 0 0 / 0.18);
+
+  /* Charts (dataviz palette; every pairing checked for color-blind separation and contrast) */
+  --viz-surface: var(--panel);
+  --viz-text-primary: #f3f0ea;
+  --viz-text-secondary: #c8c2b6;
+  --viz-muted: #8d867a;
+  --viz-grid: #38342e;
+  --viz-axis: #4d483f;
+  --viz-series-1: #3987e5;
+  --viz-deemphasis: #8d867a;
+  --viz-win: #3987e5;
+  --viz-draw: #7f796d;
+  --viz-loss: #e66767;
+  --viz-severity-1: #1c5cab;
+  --viz-severity-2: #3987e5;
+  --viz-severity-3: #9ec5f4;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --bg: #f2efe8;
+  --panel: #ffffff;
+  --panel-2: #f7f5f0;
+  --raised: #ebe7de;
+  --line: #ddd8cc;
+  --ink: #1f1c18;
+  --ink-2: #4d483f;
+  --muted: #7d776b;
+
+  --brand: #3f8a31;
+  --brand-hover: #357a29;
+  --on-brand: #ffffff;
+  --danger: #c93a30;
+  --warning: #a8710a;
+  --info: #1f6fb0;
+
+  --cls-best: #3a8a2c;
+  --cls-good: #1f74b8;
+  --cls-inaccuracy: #a07a00;
+  --cls-mistake: #c25e0c;
+  --cls-blunder: #c93a30;
+
+  --shadow-card: 0 1px 2px rgb(31 28 24 / 0.06), 0 8px 24px rgb(31 28 24 / 0.06);
+
+  --viz-text-primary: #0b0b0b;
+  --viz-text-secondary: #52514e;
+  --viz-muted: #898781;
+  --viz-grid: #e1e0d9;
+  --viz-axis: #c3c2b7;
+  --viz-series-1: #2a78d6;
+  --viz-deemphasis: #898781;
+  --viz-win: #2a78d6;
+  --viz-draw: #c3c2b7;
+  --viz-loss: #e34948;
+  --viz-severity-1: #86b6ef;
+  --viz-severity-2: #2a78d6;
+  --viz-severity-3: #104281;
+}
+
+@theme inline {
+  --color-base: var(--bg);
+  --color-panel: var(--panel);
+  --color-panel-2: var(--panel-2);
+  --color-raised: var(--raised);
+  --color-line: var(--line);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-muted: var(--muted);
+  --color-brand: var(--brand);
+  --color-brand-hover: var(--brand-hover);
+  --color-on-brand: var(--on-brand);
+  --color-danger: var(--danger);
+  --color-warning: var(--warning);
+  --color-info: var(--info);
+  --color-cls-best: var(--cls-best);
+  --color-cls-good: var(--cls-good);
+  --color-cls-inaccuracy: var(--cls-inaccuracy);
+  --color-cls-mistake: var(--cls-mistake);
+  --color-cls-blunder: var(--cls-blunder);
+  --shadow-card: var(--shadow-card);
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+@layer base {
+  *,
+  ::after,
+  ::before {
+    border-color: var(--line);
+  }
+
+  html {
+    background: var(--bg);
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a {
+    transition: color 120ms;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--brand);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--brand) 35%, transparent);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    ::after,
+    ::before {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-2xl border border-line bg-panel shadow-card;
+  }
+
+  .btn {
+    @apply inline-flex cursor-pointer items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-primary {
+    @apply bg-brand text-on-brand hover:bg-brand-hover;
+  }
+  .btn-secondary {
+    @apply border border-line bg-panel-2 text-ink hover:bg-raised;
+  }
+  .btn-ghost {
+    @apply text-ink-2 hover:bg-raised hover:text-ink;
+  }
+  .btn-sm {
+    @apply px-3 py-1.5 text-xs;
+  }
+
+  .input {
+    @apply w-full rounded-lg border border-line bg-panel-2 px-3 py-2 text-sm text-ink placeholder:text-muted focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/25 disabled:opacity-60;
+  }
+
+  .label {
+    @apply mb-1.5 block text-sm font-medium text-ink-2;
+  }
+
+  .badge {
+    @apply inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold;
+  }
+
+  .alert {
+    @apply rounded-lg border px-3 py-2 text-sm;
+  }
+  .alert-danger {
+    @apply border-danger/30 bg-danger/10 text-danger;
+  }
+  .alert-success {
+    @apply border-brand/30 bg-brand/10 text-brand;
+  }
+
+  .data-table {
+    @apply w-full text-left text-sm;
+  }
+  .data-table thead {
+    @apply bg-panel-2 text-xs uppercase tracking-wide text-muted;
+  }
+  .data-table th {
+    @apply px-4 py-3 font-semibold;
+  }
+  .data-table td {
+    @apply px-4 py-3;
+  }
+  .data-table tbody tr {
+    @apply border-t border-line;
+  }
+
+  .shimmer {
+    @apply animate-pulse rounded-lg bg-raised;
+  }
+}

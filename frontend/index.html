@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#1c1a17" />
+    <meta name="description" content="Analyze your chess.com games with Stockfish, find the openings that keep costing you points, and train on your own mistakes." />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>Gambit</title>
+    <script>
+      // Set the theme before first paint so there's no flash: saved choice, else the OS setting.
+      ;(function () {
+        var theme = 'dark'
+        try {
+          var saved = localStorage.getItem('gambit_theme')
+          if (saved === 'light' || saved === 'dark') theme = saved
+          else if (window.matchMedia('(prefers-color-scheme: light)').matches) theme = 'light'
+        } catch (e) {}
+        document.documentElement.dataset.theme = theme
+      })()
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

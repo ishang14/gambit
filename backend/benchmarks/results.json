@@ -1,0 +1,86 @@
+{
+  "run_at": "2026-10-11T00:40:38+00:00",
+  "machine": {
+    "cpu": "13th Gen Intel(R) Core(TM) i5-13420H",
+    "cpus_visible": 12,
+    "python": "3.11.17",
+    "engine_threads": 1,
+    "engine_hash_mb": 64
+  },
+  "games": {
+    "count": 30,
+    "plies": 2029,
+    "source": "30 standard games from one public chess.com account (Apr-Jul 2026), moves only"
+  },
+  "results": [
+    {
+      "depth": 10,
+      "cold": {
+        "total_seconds": 32.57,
+        "mean_seconds_per_game": 1.086,
+        "median_seconds_per_game": 0.946,
+        "p95_seconds_per_game": 1.955,
+        "engine_calls": 1860,
+        "cache_hits": 196,
+        "cache_hit_rate": 0.095
+      },
+      "warm": {
+        "total_seconds": 0.53,
+        "mean_seconds_per_game": 0.018,
+        "median_seconds_per_game": 0.017,
+        "p95_seconds_per_game": 0.029,
+        "engine_calls": 0,
+        "cache_hits": 2056,
+        "cache_hit_rate": 1.0
+      },
+      "mean_ms_per_engine_call": 15.6,
+      "p95_ms_per_engine_call": 46.5
+    },
+    {
+      "depth": 14,
+      "cold": {
+        "total_seconds": 216.39,
+        "mean_seconds_per_game": 7.213,
+        "median_seconds_per_game": 7.133,
+        "p95_seconds_per_game": 13.64,
+        "engine_calls": 1860,
+        "cache_hits": 196,
+        "cache_hit_rate": 0.095
+      },
+      "warm": {
+        "total_seconds": 0.55,
+        "mean_seconds_per_game": 0.018,
+        "median_seconds_per_game": 0.017,
+        "p95_seconds_per_game": 0.034,
+        "engine_calls": 0,
+        "cache_hits": 2056,
+        "cache_hit_rate": 1.0
+      },
+      "mean_ms_per_engine_call": 114.7,
+      "p95_ms_per_engine_call": 294.2
+    },
+    {
+      "depth": 18,
+      "cold": {
+        "total_seconds": 1103.99,
+        "mean_seconds_per_game": 36.8,
+        "median_seconds_per_game": 35.608,
+        "p95_seconds_per_game": 62.36,
+        "engine_calls": 1860,
+        "cache_hits": 196,
+        "cache_hit_rate": 0.095
+      },
+      "warm": {
+        "total_seconds": 0.53,
+        "mean_seconds_per_game": 0.018,
+        "median_seconds_per_game": 0.017,
+        "p95_seconds_per_game": 0.028,
+        "engine_calls": 0,
+        "cache_hits": 2056,
+        "cache_hit_rate": 1.0
+      },
+      "mean_ms_per_engine_call": 591.8,
+      "p95_ms_per_engine_call": 1405.9
+    }
+  ]
+}

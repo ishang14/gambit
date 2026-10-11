@@ -1,0 +1,81 @@
+# Production: one host, everything behind nginx on a single port.
+#
+#   JWT_SECRET=$(openssl rand -hex 32) docker compose -f docker-compose.prod.yml up -d --build
+#
+# Then open http://<host>:${WEB_PORT:-80}. MongoDB and Redis are not exposed outside
+# the Compose network. Put a TLS-terminating proxy (or a managed load balancer) in front
+# for HTTPS. Scale analysis with: docker compose -f docker-compose.prod.yml up -d --scale worker=3
+
+x-backend-env: &backend-env
+  ENVIRONMENT: production
+  MONGO_URL: mongodb://mongo:27017
+  MONGO_DB: gambit
+  REDIS_URL: redis://redis:6379/0
+  JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET to a long random string}
+  CORS_ORIGINS: '[]'
+  ANALYSIS_DEPTH: ${ANALYSIS_DEPTH:-14}
+
+x-backend-deps: &backend-deps
+  mongo:
+    condition: service_healthy
+  redis:
+    condition: service_healthy
+
+services:
+  web:
+    build:
+      context: ./frontend
+      target: prod
+    ports:
+      - "${WEB_PORT:-80}:80"
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+
+  api:
+    build: ./backend
+    environment: *backend-env
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --workers 2 --proxy-headers --forwarded-allow-ips "*"
+    depends_on: *backend-deps
+    healthcheck:
+      test: ["CMD", "python", "-c", "import json, urllib.request; assert json.load(urllib.request.urlopen('http://localhost:8000/health'))['status'] == 'ok'"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+    restart: unless-stopped
+
+  worker:
+    build: ./backend
+    environment: *backend-env
+    command: arq worker.WorkerSettings
+    depends_on: *backend-deps
+    restart: unless-stopped
+
+  mongo:
+    image: mongo:7
+    volumes:
+      - mongo-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping')"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    # Persist the job queue so queued analyses survive a restart.
+    command: redis-server --appendonly yes
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+
+volumes:
+  mongo-data:
+  redis-data:
