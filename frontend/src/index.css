@@ -127,6 +127,23 @@
     background: var(--bg);
   }
 
+  /* Tailwind v4 no longer gives buttons a pointer cursor, so set it for everything clickable. */
+  button:not(:disabled),
+  [role='button']:not([aria-disabled='true']),
+  [role='menuitem'],
+  a[href],
+  summary,
+  select:not(:disabled),
+  label[for],
+  input[type='checkbox']:not(:disabled),
+  input[type='radio']:not(:disabled) {
+    cursor: pointer;
+  }
+  button:disabled,
+  [aria-disabled='true'] {
+    cursor: not-allowed;
+  }
+
   body {
     background: var(--bg);
     color: var(--ink);

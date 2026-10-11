@@ -5,6 +5,7 @@ import Icon from './ui/Icon.jsx'
 import Logo from './ui/Logo.jsx'
 import Spinner from './ui/Spinner.jsx'
 import ThemeToggle from './ui/ThemeToggle.jsx'
+import UserMenu from './ui/UserMenu.jsx'
 
 const links = [
   { to: '/import', label: 'Import', icon: 'import' },
@@ -43,17 +44,7 @@ export default function Layout() {
 
           <div className="ml-auto flex items-center gap-2">
             <ThemeToggle />
-            <span
-              aria-hidden="true"
-              className="flex h-9 w-9 items-center justify-center rounded-full bg-brand/20 text-sm font-bold uppercase text-brand"
-            >
-              {user.email[0]}
-            </span>
-            <span className="hidden max-w-48 truncate text-sm text-ink-2 lg:inline">{user.email}</span>
-            <button type="button" onClick={logout} className="btn btn-ghost btn-sm">
-              <Icon name="logout" className="h-4 w-4" />
-              <span>Log out</span>
-            </button>
+            <UserMenu email={user.email} onLogout={logout} />
           </div>
         </div>
       </header>

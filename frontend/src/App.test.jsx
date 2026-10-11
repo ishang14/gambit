@@ -36,11 +36,12 @@ describe('routing when logged in', () => {
     expect(await screen.findByRole('heading', { level: 1, name: 'Games' })).toBeInTheDocument()
   })
 
-  it('shows the nav bar and the user email', async () => {
+  it('shows the nav bar, with the user email tucked into the account menu', async () => {
     logInAs()
     renderAt('/games')
     expect(await screen.findByRole('link', { name: 'Training' })).toBeInTheDocument()
-    expect(screen.getByText(testUser.email)).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Account menu' })).toHaveTextContent(testUser.email[0].toUpperCase())
+    expect(screen.queryByText(testUser.email)).not.toBeInTheDocument()
   })
 
   it('sends logged-in users away from the login page', async () => {
@@ -136,7 +137,8 @@ describe('logout', () => {
     logInAs()
     renderAt('/games')
 
-    fireEvent.click(await screen.findByRole('button', { name: 'Log out' }))
+    fireEvent.click(await screen.findByRole('button', { name: 'Account menu' }))
+    fireEvent.click(screen.getByRole('menuitem', { name: 'Log out' }))
 
     expect(await screen.findByRole('heading', { level: 1, name: 'Log in' })).toBeInTheDocument()
     expect(tokenStore.get()).toBeNull()
