@@ -36,6 +36,9 @@ services:
   api:
     build: ./backend
     environment: *backend-env
+    env_file:
+      - path: .env
+        required: false   # optional: any setting from backend/app/config.py can go here
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --workers 2 --proxy-headers --forwarded-allow-ips "*"
     depends_on: *backend-deps
     healthcheck:
@@ -48,6 +51,9 @@ services:
   worker:
     build: ./backend
     environment: *backend-env
+    env_file:
+      - path: .env
+        required: false   # optional: any setting from backend/app/config.py can go here
     command: arq worker.WorkerSettings
     depends_on: *backend-deps
     restart: unless-stopped

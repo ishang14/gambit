@@ -178,7 +178,7 @@ nginx serves the built app and proxies `/api` on port `WEB_PORT` (default 80). M
 
 ### Configuration
 
-All settings are environment variables (see `backend/app/config.py`).
+All settings are environment variables (see `backend/app/config.py`). To change one with Docker, create a `.env` file next to `docker-compose.yml` (copy `.env.example`, or write just the lines you want, such as `TRAINING_NEW_CARDS_PER_DAY=100`) and run `docker compose up -d`; both compose files pass it to the API and worker. `.env` is git-ignored.
 
 | Variable | Default | Meaning |
 | --- | --- | --- |
