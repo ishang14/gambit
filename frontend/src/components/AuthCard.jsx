@@ -40,7 +40,7 @@ const POINTS = [
 /** Sign-in / sign-up layout: a brand panel beside the form. */
 export default function AuthCard({ title, error, onSubmit, submitLabel, submitting, footer, children }) {
   return (
-    <div className="grid min-h-screen bg-base lg:grid-cols-2">
+    <div className="grid min-h-screen bg-canvas lg:grid-cols-2">
       <aside className="relative hidden flex-col justify-between overflow-hidden bg-panel p-12 lg:flex">
         <div className="absolute -right-24 -top-24 h-80 w-80 rounded-full bg-brand/15 blur-3xl" aria-hidden="true" />
         <Logo />

@@ -20,7 +20,7 @@
   --brand: #62b04a;
   --brand-hover: #74c25c;
   --on-brand: #0f1f0b;
-  --danger: #ee6b60;
+  --danger: #f27d72;
   --warning: #e8b23f;
   --info: #6cb8ec;
 
@@ -62,10 +62,10 @@
   --ink-2: #4d483f;
   --muted: #7d776b;
 
-  --brand: #3f8a31;
-  --brand-hover: #357a29;
+  --brand: #37792b;
+  --brand-hover: #2d6a23;
   --on-brand: #ffffff;
-  --danger: #c93a30;
+  --danger: #bd3228;
   --warning: #a8710a;
   --info: #1f6fb0;
 
@@ -93,7 +93,7 @@
 }
 
 @theme inline {
-  --color-base: var(--bg);
+  --color-canvas: var(--bg);
   --color-panel: var(--panel);
   --color-panel-2: var(--panel-2);
   --color-raised: var(--raised);

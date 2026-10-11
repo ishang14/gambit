@@ -178,7 +178,7 @@ nginx serves the built app and proxies `/api` on port `WEB_PORT` (default 80). M
 
 ### Configuration
 
-All settings are environment variables (see `backend/app/config.py`). To change one with Docker, create a `.env` file next to `docker-compose.yml` (copy `.env.example`, or write just the lines you want, such as `TRAINING_NEW_CARDS_PER_DAY=100`) and run `docker compose up -d`; both compose files pass it to the API and worker. `.env` is git-ignored.
+All settings are environment variables (see `backend/app/config.py`).
 
 | Variable | Default | Meaning |
 | --- | --- | --- |
@@ -191,6 +191,10 @@ All settings are environment variables (see `backend/app/config.py`). To change 
 | `TRAINING_NEW_CARDS_PER_DAY` | 20 | New training cards started per 24 hours |
 | `CHESSCOM_REQUEST_DELAY_SECONDS` | 1.0 | Minimum gap between chess.com requests |
 | `MONGO_URL`, `MONGO_DB`, `REDIS_URL`, `STOCKFISH_PATH` | local defaults | Connections |
+| `CORS_ORIGINS` | `["http://localhost:5173"]` | Browser origins allowed to call the API (JSON list; `[]` in production, where nginx serves both from one origin) |
+| `ACCESS_TOKEN_EXPIRE_MINUTES`, `JWT_ALGORITHM` | 1440, `HS256` | Session length (24 h) and token signing algorithm |
+| `ENGINE_THREADS`, `ENGINE_HASH_MB` | 1, 64 | Stockfish threads and hash size per worker |
+| `CHESSCOM_USER_AGENT` | `Gambit/0.1 (…)` | User-Agent sent to chess.com; set it to something that identifies you |
 
 ## API
 

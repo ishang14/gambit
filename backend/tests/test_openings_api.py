@@ -1,7 +1,6 @@
 from typing import Any
 
 import chess
-from bson import ObjectId
 from httpx import AsyncClient
 from motor.motor_asyncio import AsyncIOMotorDatabase
 

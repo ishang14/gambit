@@ -25,7 +25,7 @@ export default function Layout() {
   const { user, logout } = useAuth()
 
   return (
-    <div className="min-h-screen bg-base text-ink">
+    <div className="min-h-screen bg-canvas text-ink">
       <header className="sticky top-0 z-30 border-b border-line bg-panel/85 backdrop-blur">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-2 px-4 py-3">
           <NavLink to="/" aria-label="Gambit home" className="rounded-lg">
